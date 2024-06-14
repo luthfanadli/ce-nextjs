@@ -23,7 +23,7 @@ const LoginForm = () => {
 
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="xs"
       style={{
         display: "flex",
         flexDirection: "column",
