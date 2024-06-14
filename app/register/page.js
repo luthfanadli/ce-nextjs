@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   TextField,
@@ -11,16 +11,57 @@ import {
   Paper,
   Box,
 } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const checkAuth = () => {
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      router.push("/product");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add register logic here
+    setLoading(true);
+    try {
+      const response = await fetch("http://51.79.254.247:8123/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+      toast.success("Registration successful!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } catch (error) {
+      toast.error(error.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <Container
@@ -72,8 +113,9 @@ const RegisterForm = () => {
                 color="primary"
                 type="submit"
                 fullWidth
+                disabled={loading}
               >
-                Register
+                {loading ? "Loading..." : "Register"}
               </Button>
             </Grid>
             <Grid item textAlign="center">
@@ -92,6 +134,7 @@ const RegisterForm = () => {
           </Grid>
         </form>
       </Paper>
+      <ToastContainer />
     </Container>
   );
 };

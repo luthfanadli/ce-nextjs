@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Link from "next/link";
 import {
   Button,
@@ -10,8 +12,22 @@ import {
   CardContent,
   CardMedia,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const router = useRouter();
+
+  const checkAuth = () => {
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      router.push("/product");
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <Container
       maxWidth="lg"
