@@ -210,19 +210,37 @@ const ProductPage = () => {
                 <Grid container spacing={3}>
                   {currentProducts.map((product, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                      <Card style={{ height: "99%" }}>
+                      <Card
+                        style={{
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
                         <CardMedia
                           component="img"
                           image={product.imageUrl}
                           alt={product.name}
                           style={{ height: "190px", objectFit: "cover" }}
                         />
-                        <CardContent>
-                          <Typography variant="h5">{product.name}</Typography>
-                          <Typography variant="body2">
-                            {product.description}
-                          </Typography>
-                          <Typography variant="h6">
+                        <CardContent
+                          style={{
+                            flexGrow: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <div>
+                            <Typography variant="h5">{product.name}</Typography>
+                            <Typography variant="body2">
+                              {product.description}
+                            </Typography>
+                          </div>
+                          <Typography
+                            variant="h6"
+                            style={{ alignSelf: "flex-end" }}
+                          >
                             {formatRupiah(product.price)}
                           </Typography>
                         </CardContent>
