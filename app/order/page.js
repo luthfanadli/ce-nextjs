@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -12,9 +12,11 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 
 const OrderPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const product_id = searchParams.get("product_id");
 
   const [product, setProduct] = useState(null);
@@ -77,6 +79,14 @@ const OrderPage = () => {
           alignItems: "center",
         }}
       >
+        <Button
+          variant="text"
+          startIcon={<ArrowBack />}
+          onClick={() => router.push("/product")}
+          style={{ alignSelf: "flex-start", marginBottom: "16px" }}
+        >
+          Back to Product Page
+        </Button>
         {product ? (
           <Card style={{ width: "100%" }}>
             <CardMedia
