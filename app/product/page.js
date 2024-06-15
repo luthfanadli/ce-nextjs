@@ -19,6 +19,7 @@ import {
   FormControl,
   InputLabel,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
@@ -231,18 +232,34 @@ const ProductPage = () => {
                             justifyContent: "space-between",
                           }}
                         >
-                          <div>
-                            <Typography variant="h5">{product.name}</Typography>
-                            <Typography variant="body2">
-                              {product.description}
-                            </Typography>
+                          <div style={{ textAlign: "center" }}>
+                            <Typography variant="h6">{product.name}</Typography>
                           </div>
-                          <Typography
-                            variant="h6"
-                            style={{ alignSelf: "flex-end" }}
+
+                          <Box
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              marginTop: "auto",
+                            }}
                           >
-                            {formatRupiah(product.price)}
-                          </Typography>
+                            <Typography variant="h7">
+                              {formatRupiah(product.price)}
+                            </Typography>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              style={{ marginTop: "10px" }}
+                              onClick={() =>
+                                router.push(
+                                  `/order?product_id=${product.product_id}`
+                                )
+                              }
+                            >
+                              Order
+                            </Button>
+                          </Box>
                         </CardContent>
                       </Card>
                     </Grid>
