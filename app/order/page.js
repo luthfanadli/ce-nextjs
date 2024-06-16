@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import {
   Container,
   Typography,
@@ -169,4 +169,10 @@ const formatRupiah = (price) => {
   }).format(price);
 };
 
-export default OrderPage;
+export default function OrderPageWithSuspense() {
+  return (
+    <Suspense fallback={<>Loading...</>}>
+      <OrderPage />
+    </Suspense>
+  );
+}
