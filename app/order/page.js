@@ -25,7 +25,7 @@ const OrderPage = () => {
   const fetchProductData = async (productId) => {
     try {
       const response = await fetch(
-        `http://51.79.254.247:8123/product/${productId}`
+        `${process.env.NEXT_PUBLIC_BACKEND}/product/${productId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch product data");
@@ -47,9 +47,36 @@ const OrderPage = () => {
     }
   }, [product_id]);
 
-  const handleCheckout = () => {
-    console.log("Checkout button clicked");
-    // Add your checkout logic here
+  useEffect(() => {
+    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const clientKey = process.env.NEXT_PUBLIC_CLIENT;
+    const script = document.createElement("script");
+    script.src = snapScript;
+    script.setAttribute("data-client-key", clientKey);
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleCheckout = async () => {
+    const data = {
+      id: product.product_id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    };
+
+    const response = await fetch("/api/midtrans", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const requestData = await response.json();
+    window.snap.pay(requestData.token);
   };
 
   if (loading) {

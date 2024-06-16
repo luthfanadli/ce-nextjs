@@ -72,7 +72,9 @@ const ProductPage = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://51.79.254.247:8123/product");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/product`
+      );
       const data = await response.json();
       setProducts(data);
       setFilteredProducts(data);
