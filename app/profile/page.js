@@ -9,27 +9,28 @@ function UserPage() {
   const router = useRouter();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const userId = localStorage.getItem("user_id");
-
-  const fetchUserData = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND}/users/${userId}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-      const userData = await response.json();
-      setUserData(userData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+
     if (userId) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND}/users/${userId}`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+          const userData = await response.json();
+          setUserData(userData);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setLoading(false);
+        }
+      };
+
       fetchUserData();
     } else {
       setLoading(false);
